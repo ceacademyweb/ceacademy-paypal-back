@@ -14,7 +14,7 @@ export const createOrder = async (req, res) => {
         {
           amount: {
             currency_code: 'USD',
-            value: '105.70',
+            value: '200',
           },
         },
       ],
