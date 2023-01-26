@@ -1,46 +1,45 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   PAYPAL_API,
   HOST,
   PAYPAL_API_CLIENT,
   PAYPAL_API_SECRET,
-} from "../config";
+} from '../config';
 
 export const createOrder = async (req, res) => {
   try {
     const order = {
-      intent: "CAPTURE",
+      intent: 'CAPTURE',
       purchase_units: [
         {
           amount: {
-            currency_code: "USD",
-            value: "105.70",
+            currency_code: 'USD',
+            value: '105.70',
           },
         },
       ],
       application_context: {
-        brand_name: "mycompany.com",
-        landing_page: "NO_PREFERENCE",
-        user_action: "PAY_NOW",
+        brand_name: 'CEACADEMY',
+        landing_page: 'NO_PREFERENCE',
+        user_action: 'PAY_NOW',
         return_url: `${HOST}/capture-order`,
         cancel_url: `${HOST}/cancel-payment`,
       },
     };
 
-
     // format the body
     const params = new URLSearchParams();
-    params.append("grant_type", "client_credentials");
+    params.append('grant_type', 'client_credentials');
 
     // Generate an access token
     const {
       data: { access_token },
     } = await axios.post(
-      "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+      'https://api-m.sandbox.paypal.com/v1/oauth2/token',
       params,
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
         auth: {
           username: PAYPAL_API_CLIENT,
@@ -67,7 +66,7 @@ export const createOrder = async (req, res) => {
     return res.json(response.data);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json("Something goes wrong");
+    return res.status(500).json('Something goes wrong');
   }
 };
 
@@ -88,13 +87,13 @@ export const captureOrder = async (req, res) => {
 
     console.log(response.data);
 
-    res.redirect("/payed.html");
+    res.redirect('/payed.html');
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Internal Server error" });
+    return res.status(500).json({ message: 'Internal Server error' });
   }
 };
 
 export const cancelPayment = (req, res) => {
-  res.redirect("/");
+  res.redirect('/');
 };

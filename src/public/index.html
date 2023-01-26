@@ -14,12 +14,11 @@
   <script>
     const checkout = document.getElementById("checkout");
     checkout.addEventListener("click", async () => {
-      fetch("/create-order", {
+      const response = await fetch("/create-order", {
         method: "POST",
-      }).then((res) => res.json())
-        .then((data) => {
-          window.location.href = data.links[1].href
-        })
+      });
+      const data = await response.json();
+      window.location.href = data.links[1].href
     });
   </script>
 </body>
