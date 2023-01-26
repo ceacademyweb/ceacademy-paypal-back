@@ -87,7 +87,7 @@ export const captureOrder = async (req, res) => {
 
     console.log(response.data);
 
-    res.redirect('/payed.html');
+    res.redirect(`${FRONT}/pago`);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Internal Server error' });
@@ -95,5 +95,5 @@ export const captureOrder = async (req, res) => {
 };
 
 export const cancelPayment = (req, res) => {
-  res.redirect('/');
+  res.redirect(`${FRONT}/cancel`);
 };
