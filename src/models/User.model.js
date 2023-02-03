@@ -49,4 +49,4 @@ const usersubsSchema = new mongoose.Schema({
 
 const Usersubs = mongoose.model('Usersubs', usersubsSchema);
 
-module.exports = Usersubs;
+export default Usersubs;

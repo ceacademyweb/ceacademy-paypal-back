@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Usersubs from '../models/User.model';
 import {
   PAYPAL_API,
   HOST,
@@ -8,6 +9,7 @@ import {
 
 export const createOrder = async (req, res) => {
   console.log(req.body.telegram);
+  const telegram = req.body.telegram;
   try {
     const order = {
       intent: 'CAPTURE',
@@ -23,7 +25,7 @@ export const createOrder = async (req, res) => {
         brand_name: 'CEACADEMY',
         landing_page: 'NO_PREFERENCE',
         user_action: 'PAY_NOW',
-        return_url: `${HOST}/capture-order`,
+        return_url: `${HOST}/capture-order/${telegram}`,
         cancel_url: `${HOST}/cancel-payment`,
       },
     };
@@ -73,7 +75,8 @@ export const createOrder = async (req, res) => {
 
 export const captureOrder = async (req, res) => {
   const { token } = req.query;
-
+  const telegram = req.params.telegram;
+  console.log(telegram);
   try {
     const response = await axios.post(
       `${PAYPAL_API}/v2/checkout/orders/${token}/capture`,
@@ -87,8 +90,32 @@ export const captureOrder = async (req, res) => {
     );
 
     console.log(response.data);
-
-    res.redirect('https://ceacademy-suscripcion.netlify.app/pago');
+    const data = response.data;
+    Usersubs.find({ telegram: telegram }, (err, result) => {
+      console.log('error: ' + err);
+      console.log(result.length);
+      if (result.length === 0) {
+        const user = new Usersubs({
+          name: data.payer.name.given_name,
+          surname: data.payer.name.surname,
+          email: data.payer.email_address,
+          subscribed: true,
+          payId: data.id,
+          telegram: telegram,
+        });
+        user.save((err, resp) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(user);
+          }
+        });
+        // console.log('user: '+user)
+      } else {
+        console.log('result: ' + result);
+      }
+    });
+    res.redirect('/');
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Internal Server error' });
@@ -96,5 +123,5 @@ export const captureOrder = async (req, res) => {
 };
 
 export const cancelPayment = (req, res) => {
-  res.redirect('https://ceacademy-suscripcion.netlify.app/');
+  res.redirect('/');
 };
