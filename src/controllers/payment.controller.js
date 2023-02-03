@@ -88,31 +88,31 @@ export const captureOrder = async (req, res) => {
     );
 
     console.log(response.data);
-    const data = response.data;
-    Usersubs.find({ email: email }, (err, result) => {
-      console.log('error: ' + err);
-      console.log(result.length);
-      if (result.length === 0) {
-        const user = new Usersubs({
-          name: data.payer.name.given_name,
-          surname: data.payer.name.surname,
-          email: data.payer.email_address,
-          subscribed: true,
-          payId: data.id,
-          telegram: '3313048691',
-        });
-        user.save((err, resp) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(user);
-          }
-        });
-        // console.log('user: '+user)
-      } else {
-        console.log('result: ' + result);
-      }
-    });
+    // const data = response.data;
+    // Usersubs.find({ email: email }, (err, result) => {
+    //   console.log('error: ' + err);
+    //   console.log(result.length);
+    //   if (result.length === 0) {
+    //     const user = new Usersubs({
+    //       name: data.payer.name.given_name,
+    //       surname: data.payer.name.surname,
+    //       email: data.payer.email_address,
+    //       subscribed: true,
+    //       payId: data.id,
+    //       telegram: '3313048691',
+    //     });
+    //     user.save((err, resp) => {
+    //       if (err) {
+    //         console.log(err);
+    //       } else {
+    //         console.log(user);
+    //       }
+    //     });
+    //     // console.log('user: '+user)
+    //   } else {
+    //     console.log('result: ' + result);
+    //   }
+    // });
     res.redirect('/');
   } catch (error) {
     console.log(error.message);
