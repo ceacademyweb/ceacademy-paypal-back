@@ -44,8 +44,10 @@ export const createOrder = async (req, res) => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         auth: {
-          username: PAYPAL_API_CLIENT,
-          password: PAYPAL_API_SECRET,
+          username:
+            'AVKimuRGPBTBkASwjuZbDHfutKxQUHqEGo_gDS9ki7NkdP2Sr1GC44ue-vboBYz0P7tL0snL0hscFuPl',
+          password:
+            'EJ7qChCc3iMC5Q7UyFtkZEjX8LFK6SSxC1EozPRq1atzc9v7GO1ZuPHHDW4U5tfRzH9NDRqhbxWae54H',
         },
       }
     );
@@ -54,7 +56,7 @@ export const createOrder = async (req, res) => {
 
     // make a request
     const response = await axios.post(
-      `${PAYPAL_API}/v2/checkout/orders`,
+      `https://api-m.sandbox.paypal.com/v2/checkout/orders`,
       order,
       {
         headers: {
