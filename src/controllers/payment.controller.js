@@ -9,8 +9,6 @@ import {
 
 export const createOrder = async (req, res) => {
   console.log('client: ' + PAYPAL_API_CLIENT);
-  const telegram = req.body.telegram;
-  console.log(telegram);
   try {
     const order = {
       intent: 'CAPTURE',
@@ -26,7 +24,7 @@ export const createOrder = async (req, res) => {
         brand_name: 'CEACADEMY',
         landing_page: 'NO_PREFERENCE',
         user_action: 'PAY_NOW',
-        return_url: `${HOST}/capture-order/${telegram}`,
+        return_url: `${HOST}/capture-order`,
         cancel_url: `${HOST}/cancel-payment`,
       },
     };
@@ -76,7 +74,6 @@ export const createOrder = async (req, res) => {
 
 export const captureOrder = async (req, res) => {
   const { token } = req.query;
-  const telegram = req.params.telegram;
   console.log(telegram);
   try {
     const response = await axios.post(
@@ -92,7 +89,7 @@ export const captureOrder = async (req, res) => {
 
     console.log(response.data);
     const data = response.data;
-    Usersubs.find({ telegram: telegram }, (err, result) => {
+    Usersubs.find({ email: email }, (err, result) => {
       console.log('error: ' + err);
       console.log(result.length);
       if (result.length === 0) {
@@ -102,7 +99,7 @@ export const captureOrder = async (req, res) => {
           email: data.payer.email_address,
           subscribed: true,
           payId: data.id,
-          telegram: telegram,
+          telegram: '3313048691',
         });
         user.save((err, resp) => {
           if (err) {

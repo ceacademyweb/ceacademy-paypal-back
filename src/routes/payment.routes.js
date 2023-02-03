@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/create-order', createOrder);
 
-router.get('/capture-order/:telegram', captureOrder);
+router.get('/capture-order', captureOrder);
 
 router.get('/cancel-order', cancelPayment);
 
