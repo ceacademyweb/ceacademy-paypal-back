@@ -8,7 +8,7 @@ import {
 } from '../config';
 
 export const createOrder = async (req, res) => {
-  console.log(req.body.telegram);
+  console.log('client: ' + PAYPAL_API_CLIENT);
   const telegram = req.body.telegram;
   try {
     const order = {
