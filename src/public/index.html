@@ -9,13 +9,19 @@
 </head>
 
 <body>
+
   <button id="checkout">Checkout!</button>
 
   <script>
     const checkout = document.getElementById("checkout");
     checkout.addEventListener("click", async () => {
+      const obj = { telegram: '3313048691' }
       const response = await fetch("/create-order", {
         method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+          "Content-Type": "application/json",
+        }
       });
       const data = await response.json();
       window.location.href = data.links[1].href

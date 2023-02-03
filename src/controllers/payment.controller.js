@@ -7,6 +7,7 @@ import {
 } from '../config';
 
 export const createOrder = async (req, res) => {
+  console.log(req.body.telegram);
   try {
     const order = {
       intent: 'CAPTURE',
